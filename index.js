@@ -354,6 +354,31 @@ const SEARCH_OUTPUT = {
       type: 'string',
       description: 'pool=chat 时：查询里认出来的时间词（「昨天」「上次」「以前」），没认出来就是空串',
     },
+    related: {
+      type: 'array',
+      description:
+        'pool=chat 时（0.5.1 关系路）：从命中的话**跳到同一件事**的其他话——那些话里往往没有查询词，' +
+        '靠字面永远捞不到。默认最多 3 件事 × 每件 3 条；传 expand:"none" 可以关掉。',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['id', 'at', 'speaker', 'text', 'via'],
+        properties: {
+          id: { type: 'integer' },
+          at: { type: 'string' },
+          speaker: { type: 'integer', description: '0 = 用户，1 = 大肥鱼' },
+          text: { type: 'string', description: '原话（外部来源已转义）' },
+          via: { type: 'string', description: '怎么来的，例如 `同事件「备份与找回」`' },
+          eventId: { type: 'integer' },
+          eventName: { type: 'string' },
+          eventTotal: { type: 'integer', description: '这件事总共几条话（这个数比列出来的多，说明还有没列的）' },
+        },
+      },
+    },
+    relatedEventCount: {
+      type: 'integer',
+      description: 'pool=chat 时：关系路从几件事里跳过来的',
+    },
   },
 };
 
@@ -529,6 +554,8 @@ export function apply(ctx, config) {
       ' 撞「还记得吗 / 上次那个 / 以前怎么定的」这类话，先查这里，别凭印象说。翻不到先换词（撞行为/结果而不是功能名）、实在没有再用 pool:"all" 把闲聊池也扫一遍，至少试三次再承认没有。' +
       ' **时间词**（2026-11-07 加，B3）：q 里写「昨天 / 前天 / 今天」「最近三天 / 最近一周」「上次 / 刚才」「以前 / 之前 / 当初」会被自动认出来——昨天前天缩到那一天、上次让新的往上推、以前翻全库。认出来时返回里 timeHint 有值，不用另传 day。' +
       ' **拒答规矩**（2026-11-07 加，B4）：返回里的 verdict 要说清话在后面——hit 是真撞上；weak 表示只沾到零散的字，**那几条要是跟问题无关，就直说「没记过」，别硬凑**；empty_all 就是全库都没有，直说没记过；empty_window 是「最近没有、更早的有」，要翻传 windowDays: 0。**别把「没查到」说成「没记过」，也别把「没记过」编成一个像样的答案。**' +
+      ' **关系路**（0.5.1，B1/B2）：返回里的 related 是「**同一件事里没提这个词的其它话**」。' +
+      '问「那天到底怎么弄的」这种，答案的另一半往往就在 related 里，别只看 words。' +
       sharedNote,
     parameters: {
       type: 'object',
@@ -565,6 +592,21 @@ export function apply(ctx, config) {
             '要不要把「已经被后来某条取代」的旧话也翻出来（2026-11-07 加，A4）。' +
             ' 默认 false —— 比如称呼从「阿水」改成「老爸」，默认只给「老爸」那条。' +
             ' 问「以前是怎么定的 / 这个改过没」时传 true，能看到新旧两条和时间差。',
+        },
+        expand: {
+          type: 'string',
+          enum: ['event', 'none'],
+          description:
+            '关系路（0.5.1，**默认 event**）：命中后跳一跳，把「同一件事里没提这个词的其它话」也捞回来，' +
+            '放在返回的 related 里。要的正是「A→B→C 能串起来，不是只命中字面」。传 none 关掉。',
+        },
+        expandEvents: {
+          type: 'integer',
+          description: '关系路最多从几件事里跳（默认 3，范围 1~10）',
+        },
+        expandPerEvent: {
+          type: 'integer',
+          description: '关系路每件事最多捞几条（默认 3，范围 1~10）',
         },
       },
     },
