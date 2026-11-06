@@ -539,6 +539,13 @@ export function apply(ctx, config) {
             '只查最近多少天（2026-11-07 加，pool=chat 且只给 q 时生效）。默认 90 —— 实测一年后 13.6 万条时，' +
             '90 天窗口下检索 233~553ms，全库要 0.9~2.1 秒。要翻更旧的传 180 / 365，传 0 = 不限（慢）。',
         },
+        includeSuperseded: {
+          type: 'boolean',
+          description:
+            '要不要把「已经被后来某条取代」的旧话也翻出来（2026-11-07 加，A4）。' +
+            ' 默认 false —— 比如称呼从「阿水」改成「老爸」，默认只给「老爸」那条。' +
+            ' 问「以前是怎么定的 / 这个改过没」时传 true，能看到新旧两条和时间差。',
+        },
       },
     },
     output: { schema: SEARCH_OUTPUT, render: renderSearch },
