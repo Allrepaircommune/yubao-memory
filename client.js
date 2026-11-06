@@ -1033,7 +1033,7 @@ window.__ModuleLoader__.load({
     /**
      * 页一 · 「识海」（v5，2026-10-23 照 memory-eternal 的界面重做的）
      *
-     * 老黄的要求是「完全一样」：所以这一页不再自己发明样式，直接用人家的那套结构
+     * 用户的要求是「完全一样」：所以这一页不再自己发明样式，直接用人家的那套结构
      *   .ms-eternal > .mc-main > .mc-v5-pagehead / .mc-toolbar / .mc-chips / .mc-v5-feature / .mc-grid
      * 样式表从人家的页面上扒下来，作用域在 .ms-eternal 下（lib/ui/eternal.css）。
      *
@@ -1098,7 +1098,7 @@ window.__ModuleLoader__.load({
       }
 
       /**
-       * 门类：老黄 2026-10-23 定的五个抽屉 —— 闲聊 / 暧昧 / 干活 / 知识 / 规矩。
+       * 门类：用户 2026-10-23 定的五个抽屉 —— 闲聊 / 暧昧 / 干活 / 知识 / 规矩。
        *
        * 库里 memories.category 还是空的（一条都没判过），所以先这么走：
        *   ① 话挂在事上 → 看这件事属于哪一类（下面这张表，37 件事全列了）；
@@ -1133,7 +1133,7 @@ window.__ModuleLoader__.load({
       const TAGS = ['闲聊', '暧昧', '干活', '知识', '规矩'];
 
       /**
-       * 五个抽屉各自一个颜色（2026-10-23 老黄要的）。
+       * 五个抽屉各自一个颜色（2026-10-23 用户要的）。
        * 跟「谁说的」那组分开配色：说话人用蓝/粉，门类用灰蓝/玫粉/青绿/金/紫。
        */
       const CAT_COLOR = {
@@ -1162,7 +1162,7 @@ window.__ModuleLoader__.load({
         const ev = w.ev ? String(w.ev) : '';
         const cat = categoryOf(w);
         // 白字（大）：这是什么事 —— 挂着事就写事名，没挂就写门类；
-        // 灰小字：原文。老黄 2026-10-23 定的版式：上面是标签，下面才是话本身。
+        // 灰小字：原文。用户 2026-10-23 定的版式：上面是标签，下面才是话本身。
         const title = ev || cat;
         const body = plain.slice(0, 160);
         const tile = cat.slice(0, 1);
@@ -1173,9 +1173,9 @@ window.__ModuleLoader__.load({
         const tagHtml = tags.slice(0, 4).map((t) => '<button class="mc-tag mc-tag-click">#' + esc(t) + '</button>').join('') +
           (tags.length > 4 ? '<span class="mc-tag more">+' + (tags.length - 4) + '</span>' : '');
         const dots = emoDots(w, 'mc-v5-emo');
-        // 谁说的：老黄蓝、大肥鱼粉，卡片左边一条同色竖边 + 顶部一枚小徽章
+        // 谁说的：用户蓝、助手粉，卡片左边一条同色竖边 + 顶部一枚小徽章
         const who = w.sp === 0 ? 'him' : 'me';
-        const whoName = w.sp === 0 ? '老黄' : '大肥鱼';
+        const whoName = w.sp === 0 ? '你' : '大肥鱼';
         const catColor = CAT_COLOR[cat] || '#93a7c4';
         return (
           '<article class="mc-cardrow mc-card mc-v5-card who-' + who + '" data-id="' + esc(w.id) + '" style="--cat:' + catColor + '">' +
@@ -1311,7 +1311,7 @@ window.__ModuleLoader__.load({
 
       function setWords(list) {
         // ① place=trash 的是「嗯」「好的」这类废话池，不上墙；
-        // ② 同一句话在判工时期被切进好几个块，库里存了副本（老黄截图里那种一模一样的三张）——
+        // ② 同一句话在判工时期被切进好几个块，库里存了副本（用户截图里那种一模一样的三张）——
         //    按原文去重，留时间最新的一条（list 本来就是时间倒序）。
         const seen = new Set();
         all = (Array.isArray(list) ? list : []).filter((w) => {

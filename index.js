@@ -58,7 +58,7 @@ export function serveNebulaBg(req, res) {
 
 /**
  * 面板样式表：把 memory-eternal 的界面那套 CSS 扒下来、作用域到 `.ms-eternal` 下
- * （2026-10-23 老黄要「可视化完全一样」）。文件在 lib/ui/eternal.css，跟插件一起走。
+ * （2026-10-23 用户要「可视化完全一样」）。文件在 lib/ui/eternal.css，跟插件一起走。
  */
 const ETERNAL_CSS_PATH = fileURLToPath(new URL('./lib/ui/eternal.css', import.meta.url));
 
@@ -600,7 +600,7 @@ export function apply(ctx, config) {
           type: 'boolean',
           description:
             '要不要把「已经被后来某条取代」的旧话也翻出来（2026-11-07 加，A4）。' +
-            ' 默认 false —— 比如称呼从「阿水」改成「老爸」，默认只给「老爸」那条。' +
+            ' 默认 false —— 比如称呼从「老王」改成「张工」，默认只给「张工」那条。' +
             ' 问「以前是怎么定的 / 这个改过没」时传 true，能看到新旧两条和时间差。',
         },
         expand: {
@@ -709,9 +709,9 @@ export function apply(ctx, config) {
                 items: { type: 'integer' },
                 description:
                   '这条话取代了哪几条旧记忆（传 memories.id）。可空。' +
-                  '**判据（老爸 2026-11-07 定）**：只标「影响情感」的、「对前后文有影响」的 —— ' +
-                  '比如称呼从「阿水」改成「老爸」、压缩阈值从 0.6 改成 0.9。' +
-                  '一次性调度（MAA 先停、下一跳排程）**不用标**，它们过期了也不影响谁。' +
+                  '**判据（2026-11-07 定）**：只标「影响情感」的、「对前后文有影响」的 —— ' +
+                  '比如称呼从「老王」改成「张工」、压缩阈值从 0.6 改成 0.9。' +
+                  '一次性调度（某个定时任务先停、下一跳排程）**不用标**，它们过期了也不影响谁。' +
                   '被标的旧话不删，只是默认检索时不冒头。',
               },
             },

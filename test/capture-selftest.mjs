@@ -48,7 +48,7 @@ console.log('一、剥噪声');
 {
   const raw = [
     'Current runtime context. This snapshot supersedes earlier runtime-context snapshots.',
-    '老黄：把今天的判工收尾一下',
+    '用户：把今天的判工收尾一下',
     '<system-reminder>',
     '这个文件是 DSH 给每个 agent 的第一手规则',
     '</system-reminder>',
@@ -68,7 +68,7 @@ const events = [
     type: 'user/message',
     seq: 2,
     at: '2026-10-23T09:30:00+08:00',
-    data: { message: { role: 'user', content: [{ type: 'text', text: '老黄：自动沉淀今天得弄完' }] } },
+    data: { message: { role: 'user', content: [{ type: 'text', text: '用户：自动沉淀今天得弄完' }] } },
   },
   {
     type: 'assistant/message',
@@ -156,7 +156,7 @@ console.log('四、端到端落库（假模型 + 库副本）');
     equal('再跑一遍不会重复写（去重兜底）', second.written, 0);
 
     const short = await captureTurn({ llm: fakeLlm, writer, store, agent: undefined, noLog: true, events: [{ type: 'user/message', seq: 99, data: { message: { role: 'user', content: [{ type: 'text', text: '嗯' }] } } }] });
-    // 2026-10-24 老黄定「全部存，一点不漏」：短轮不再整轮丢掉，只免掉判，原话照落闲聊池
+    // 2026-10-24 用户定「全部存，一点不漏」：短轮不再整轮丢掉，只免掉判，原话照落闲聊池
     equal('短的一轮也照存（不再整轮丢）', short.written, 1);
     const shortRow = writer.get('SELECT place, s, event_id FROM memories WHERE text = ? ORDER BY id DESC LIMIT 1', '嗯');
     equal('短句落在闲聊池', shortRow?.place, 'chat');

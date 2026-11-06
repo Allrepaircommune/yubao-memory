@@ -71,7 +71,7 @@ node scripts/install.mjs --dry-run                   # 只看会做什么，不�
 - id: mindsea
   name: dsh-mindsea
   config:
-    dbPath: 'I:\鱼宝的记忆\sea2.db'
+    dbPath: 'D:/memory/sea2.db'   # 换成你自己的库路径
     autoCapture: true
 ```
 
@@ -108,7 +108,7 @@ memory_search(emo: "爱", limit: 20)
 
 `memory_search` 走的是「闲聊池 + 只给词」这条路时，用新检索（`lib/search2.mjs`）：
 
-1. **分词**：中文 2-gram + 单字 + 英文整词。单字是必须的——`老爸胃不好` 切成 2-gram 会得到「爸胃」「胃不」，关键的那个「胃」反而丢了
+1. **分词**：中文 2-gram + 单字 + 英文整词。单字是必须的——`老王胃不好` 切成 2-gram 会得到「王胃」「胃不」，关键的那个「胃」反而丢了
 2. **同义词扩展**：`lib/terms.json`（组数以文件为准，现在 27 组）。`那台机器` → 出租屋笔记本、`备份那天` → 备份/演练/快照
 3. **IDF 打分**：稀有词权重高。IDF 在**候选集**上算，不是全库扫
 4. **长度归一 + 加权**：长条目不再靠字数堆分数；再乘 α 重要度、β 可信度、沉底惩罚
