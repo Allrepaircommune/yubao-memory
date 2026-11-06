@@ -200,6 +200,16 @@ function renderSearch(_args, value) {
   if (pool === 'chat') {
     lines.push(chatHead(value.axes, value));
     for (const w of value.words) lines.push(wordLine(w));
+    // 关系路（0.5.1）：命中之后跳到同一件事，把没提这个词的那几句捞回来
+    if (value.related?.length) {
+      lines.push('', `—— 关系路：同一件事里没提这个词的 ${value.related.length} 条 ——`);
+      for (const r of value.related) {
+        const who = r.speaker === 0 ? '用户' : '大肥鱼';
+        const at = String(r.at ?? '').slice(0, 16).replace('T', ' ');
+        const text = String(r.text ?? '').replace(/\s+/g, ' ');
+        lines.push(`${at}　${who}　${r.via ?? ''}　${text.slice(0, 120)}`);
+      }
+    }
     if (value.note) lines.push('', value.note);
     return [{ type: 'text', text: lines.join('\n') }];
   }
