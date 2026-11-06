@@ -9,6 +9,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { ensureMemorySchema } from '../lib/schema.mjs';
 
 const SCHEMA = `
 CREATE TABLE memories (
@@ -105,7 +106,11 @@ const db = new DatabaseSync(target);
 try {
   db.exec('PRAGMA journal_mode = WAL');
   db.exec(SCHEMA);
+  // 上面那份 SCHEMA 只写到 0.3.1；0.4.x / 0.5.x 加的列（scope / status / pinned / session /
+  // superseded_by / chat_key / decay_at …）全靠这一句补齐 —— 否则新库装上去一读就 no such column。
+  const added = ensureMemorySchema(db);
   console.log(`建好了：${target}`);
+  if (added.length) console.log(`补了 ${added.length} 个后加的列：${added.join(', ')}`);
   console.log('接下来：跑 `node scripts/install.mjs` —— 一条命令装进 DSH profile（0.4.4 起）。');
 } finally {
   db.close();
