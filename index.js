@@ -725,6 +725,8 @@ export function apply(ctx, config) {
             store,
             agent: job.agent,
             events: job.events,
+            // sessionId：A6 溯源用。拿不到就是 null，不影响写入
+            sessionId: sid,
             provider: config?.captureProvider,
             model: config?.captureModel,
             maxTokens: config?.captureMaxTokens,
