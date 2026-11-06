@@ -1,6 +1,6 @@
 {
   "name": "dsh-mindsea",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "type": "module",
   "description": "潮间带 Intertidal —— 给 DeepSeek Harness 加一套涨落自如的记忆：会话开头的定过的事随潮水露出，久不提的沉回海底但从不相丢。话 / 事 / 版本 / 阶段 / 决定 五层结构，本地 SQLite 全量存",
   "license": "MIT",
