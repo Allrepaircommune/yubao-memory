@@ -1,6 +1,8 @@
 
 
-/* 识海 · 面板样式（从 memory-eternal 的界面扒下来，作用域到 .ms-eternal）
+/* 识海 · 面板样式（取自 memory-eternal 的界面，作用域到 .ms-eternal）
+   界面样式来源：memory-eternal — Copyright (c) 2026 EternalNight996，MIT 许可，
+   原文见本项目根目录 NOTICE 与 README 的「许可」一节。
    2026-10-23 老黄要「可视化完全一样」，所以这套变量也照人家暗色那份钉死，
    不依赖宿主有没有注入 --dsw-alias-*。 */
 .ms-eternal{

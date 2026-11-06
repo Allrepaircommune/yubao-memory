@@ -5,6 +5,9 @@
 //   人设 / 时间 / 遗忘 / 走神 / 日记 / 自动化   ← 新做的，简单能看
 //
 // 数据一律走 /mindsea/api/*（服务端只读），client 不碰 sqlite。
+//
+// 「记忆库」页的布局与类名（mc-card / mc-chip / mc-v5-* / mc-rail*）沿用
+// memory-eternal — Copyright (c) 2026 EternalNight996，MIT，详见根目录 NOTICE。
 window.__ModuleLoader__.load({
   id: 'dsh-mindsea',
   factory(require) {
