@@ -1,6 +1,9 @@
-# 识海 · MindSea
+# 潮间带 · Intertidal
 
 给 [DeepSeek Harness](https://github.com/deepseek-ai) 的一个记忆插件。
+
+名字来自海边那条地带：**涨潮时被淹没，退潮时露出来**。
+记忆也是这样——常被取到的浮在上面，久不提的沉回海底，但从不相丢。
 
 它做的事很简单：**你们聊完一轮，它把这一轮的话判一遍、存进本地 SQLite**，下次要用的时候能翻出来。
 不是让模型「记住」——上下文的记忆会过期，这个不会。
@@ -13,7 +16,7 @@
 
 大多数记忆插件存的是「知识卡」：一段话压缩成一张卡，卡上写标题、摘要。
 
-识海存的是**原话**，然后在原话上面叠三层结构：
+潮间带存的是**原话**，然后在原话上面叠三层结构：
 
 ```
 话（memories）—— 一句一句，原文不动
@@ -70,7 +73,7 @@ node scripts/install.mjs --dry-run                   # 只看会做什么，不�
 
 2. 重启 DSH（或者用 `plugin_manager` 把 `include:mindsea` 关一次再开）
 
-重启后侧边栏会多一个「识海」入口。第一次聊完一轮，库里就会有数据。
+重启后侧边栏会多一个「潮间带」入口。第一次聊完一轮，库里就会有数据。
 
 > **只想建库不想装**：`node scripts/init-db.mjs [路径]`，默认在**插件目录的上一层**建 `sea2.db`。
 
@@ -168,7 +171,7 @@ memory_search(emo: "爱", limit: 20)
 
 ## 面板
 
-侧边栏「识海」进去，十一页：
+侧边栏「潮间带」进去，十一页：
 
 - **记忆库** —— 卡片墙，按门类上色，能搜、能筛
 - **知识星图** —— 把事 / 版本画成星图，能拖能转
@@ -195,7 +198,7 @@ lib/capture.mjs      自动沉淀：切轮、剥噪声、判、落库；含 scop
 lib/routes.mjs       面板的 HTTP 路由
 lib/api.mjs          面板各页要的数据
 lib/tail.mjs         每个会话第一轮推最近 10 句
-lib/sea-svg.mjs      现画一张识海图谱（SVG）
+lib/sea-svg.mjs      现画一张潮间带图谱（SVG）
 lib/ui/eternal.css   面板样式
 scripts/init-db.mjs  建空库
 test/capture-selftest.mjs  离线自测（假模型 + 库副本）
