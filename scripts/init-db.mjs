@@ -106,7 +106,7 @@ try {
   db.exec('PRAGMA journal_mode = WAL');
   db.exec(SCHEMA);
   console.log(`建好了：${target}`);
-  console.log('接下来：把插件装进 DSH profile（见 README），重启后就开始沉淀了。');
+  console.log('接下来：跑 `node scripts/install.mjs` —— 一条命令装进 DSH profile（0.4.4 起）。');
 } finally {
   db.close();
 }

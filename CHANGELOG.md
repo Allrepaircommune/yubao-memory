@@ -8,6 +8,41 @@
 
 ---
 
+## [0.4.4] — 2026-11-07
+
+### 新增
+
+- **一条命令安装（D1）**：`node scripts/install.mjs`
+
+  以前要三步（建库 → link 进 profile → 手改 package.json 的 bundles），现在一步：
+
+  ```
+  node scripts/install.mjs
+  ```
+
+  它做三件事：
+  1. link 进 profile 的 `node_modules`（Windows junction / Unix symlink）
+  2. 写进 `dsh.profile.bundles`（**改之前先备份 package.json 成 .bak-<时间戳>**）
+  3. 库不存在就建空库
+
+  参数：
+  - `--profile <目录>`：自动探测到多个 profile 时用来指定（探测到 0 个或 >1 个都会报错列出）
+  - `--db <路径>`：库放别处
+  - `--dry-run`：只看会做什么，不动手
+
+  **不改 profile 里别的任何东西**，也不起任何服务。
+
+  实测：
+  - `--dry-run` 对着 desktop profile 跑 → 三处都正确判断（link 位置对、bundles 里已有不重复加、库路径对）
+  - 真跑对着 blank profile → link 重建成功、bundles 没被改坏、空库建出来（测完删掉了）
+
+### 变更
+
+- README 安装章节重写：一条命令 + 参数说明 + 后面还要哪两步
+- `init-db.mjs` 的收尾提示改成指向 `install.mjs`
+
+---
+
 ## [0.4.3] — 2026-11-07
 
 ### 新增

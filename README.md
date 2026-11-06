@@ -31,38 +31,48 @@
 
 ## 安装
 
-### 1. 建库
+**一条命令**（0.4.4 起）：
 
 ```bash
-node scripts/init-db.mjs
+node scripts/install.mjs
 ```
 
-默认在**插件目录的上一层**建 `sea2.db`；也可以指定路径：
+它做三件事：
+
+1. 把本包 link 进你的 DSH profile（`node_modules/dsh-mindsea`，Windows 用 junction）
+2. 把 `dsh-mindsea` 写进 profile 的 `dsh.profile.bundles`（**改之前先备份 package.json**）
+3. 库不存在就建一个空库
+
+找不到 profile、或者有多个 profile 时它会列出来让你指定：
 
 ```bash
-node scripts/init-db.mjs D:/memory/sea2.db
+node scripts/install.mjs --profile "C:\Users\你\.dsh\profiles\desktop"
 ```
 
-### 2. 装进 DSH profile
-
-把这个目录 link 进你的 profile（以 `~/.dsh/profiles/desktop` 为例）：
+其它参数：
 
 ```bash
-cd ~/.dsh/profiles/desktop
-npm install <这个仓库的路径或压缩包>
+node scripts/install.mjs --db "D:/memory/sea2.db"   # 库放别处
+node scripts/install.mjs --dry-run                   # 只看会做什么，不动手
 ```
 
-或者手动在 `node_modules` 下做个软链：
+**然后还要两步**（脚本会提醒你）：
 
+1. 确认 profile 的 `cordis.patch.yml` 里有这一段：
+
+```yaml
+- id: mindsea
+  name: dsh-mindsea
+  config:
+    dbPath: 'I:\鱼宝的记忆\sea2.db'
+    autoCapture: true
 ```
-node_modules/dsh-mindsea -> <这个仓库的目录>
-```
 
-然后编辑 `~/.dsh/profiles/desktop/package.json`，把 `dsh-mindsea` 加进 `dsh.profile.bundles` 数组。
+2. 重启 DSH（或者用 `plugin_manager` 把 `include:mindsea` 关一次再开）
 
-### 3. 重启 DSH
+重启后侧边栏会多一个「识海」入口。第一次聊完一轮，库里就会有数据。
 
-重启后侧边栏会多一个「识海」入口。第一次聊完一轮，`sea2.db` 里就会有数据了。
+> **只想建库不想装**：`node scripts/init-db.mjs [路径]`，默认在**插件目录的上一层**建 `sea2.db`。
 
 > 库换个位置：设环境变量 `DSH_MINDSEA_DB=<路径>`，或者在 `cordis.patch.yml` 里给这行加 `config: { dbPath: '...' }`。
 

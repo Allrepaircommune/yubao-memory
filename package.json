@@ -1,6 +1,6 @@
 {
   "name": "dsh-mindsea",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "type": "module",
   "description": "识海 MindSea —— 给 DeepSeek Harness 加一套会自己长的记忆：每轮聊完自动沉淀，话 / 事 / 版本 / 阶段 / 决定 五层结构，带一块能翻能筛的面板",
   "license": "MIT",
@@ -35,6 +35,7 @@
     "lib/write.mjs",
     "lib/ui/eternal.css",
     "scripts/init-db.mjs",
+    "scripts/install.mjs",
     "test/capture-selftest.mjs",
     "cordis.patch.yml",
     "locale/*.json",
@@ -45,6 +46,7 @@
     "NOTICE"
   ],
   "scripts": {
+    "setup": "node scripts/install.mjs",
     "init": "node scripts/init-db.mjs",
     "test": "node test/capture-selftest.mjs"
   },
