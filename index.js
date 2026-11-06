@@ -58,7 +58,7 @@ export function serveNebulaBg(req, res) {
 
 /**
  * 面板样式表：把 memory-eternal 的界面那套 CSS 扒下来、作用域到 `.ms-eternal` 下
- * （2026-10-23 用户要「可视化完全一样」）。文件在 lib/ui/eternal.css，跟插件一起走。
+ * （2026-10-23 老黄要「可视化完全一样」）。文件在 lib/ui/eternal.css，跟插件一起走。
  */
 const ETERNAL_CSS_PATH = fileURLToPath(new URL('./lib/ui/eternal.css', import.meta.url));
 

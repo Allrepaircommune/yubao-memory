@@ -3,7 +3,7 @@
 /* 识海 · 面板样式（取自 memory-eternal 的界面，作用域到 .ms-eternal）
    界面样式来源：memory-eternal — Copyright (c) 2026 EternalNight996，MIT 许可，
    原文见本项目根目录 NOTICE 与 README 的「许可」一节。
-   2026-10-23 用户要「可视化完全一样」，所以这套变量也照人家暗色那份钉死，
+   2026-10-23 老黄要「可视化完全一样」，所以这套变量也照人家暗色那份钉死，
    不依赖宿主有没有注入 --dsw-alias-*。 */
 .ms-eternal{
   --dsw-alias-label-primary:#e5e7eb;
@@ -1339,8 +1339,8 @@
 
 
 
-/* ── 谁说的（2026-10-23 用户要「加上标记，用颜色区分，明显一点」）──────────
-   用户 = 蓝，大肥鱼 = 粉；卡片左边一条同色竖边 + 顶部一枚小徽章。 */
+/* ── 谁说的（2026-10-23 老黄要「加上标记，用颜色区分，明显一点」）──────────
+   老黄 = 蓝，大肥鱼 = 粉；卡片左边一条同色竖边 + 顶部一枚小徽章。 */
 .ms-eternal .mc-who{display:inline-block;flex:none;padding:0 7px;border-radius:999px;
   font-size:10px;line-height:16px;font-weight:600;letter-spacing:.02em}
 
@@ -1354,7 +1354,7 @@
 
 
 
-/* ── 让卡片不那么素（2026-10-23 用户说「太素了」）────────────────────────
+/* ── 让卡片不那么素（2026-10-23 老黄说「太素了」）────────────────────────
    每张卡带自己的门类色 --cat：顶上一条渐隐细线、整片极淡色底、悬停时边框亮起来。 */
 .ms-eternal .mc-v5-card{position:relative;overflow:hidden;transition:border-color .15s ease,transform .15s ease,box-shadow .15s ease}
 
@@ -1383,7 +1383,7 @@
 
 
 
-/* ── 知识卡页的背景：识海图谱（2026-10-23 用户要的「背景只是图」）──────────
+/* ── 知识卡页的背景：识海图谱（2026-10-23 老黄要的「背景只是图」）──────────
    一层 canvas 铺在最底下，只画不响应；内容区透明地浮在它上面。 */
 #pane-wall{position:absolute}
 
@@ -1440,7 +1440,7 @@
 
 
 
-/* ── 时间页「改」的按钮：统一大小、常显、带颜色（2026-10-23 用户要的）──── */
+/* ── 时间页「改」的按钮：统一大小、常显、带颜色（2026-10-23 老黄要的）──── */
 .mindsea-root .sx-fix{
   margin-left:auto;flex:none;display:inline-flex;align-items:center;justify-content:center;
   width:38px;height:24px;padding:0;border-radius:7px;
@@ -1493,7 +1493,7 @@
 
 
 
-/* ── 卡片底部：连接数 + 来源（2026-10-23 用户要「这个链接多少也加上吧，还有图标」）── */
+/* ── 卡片底部：连接数 + 来源（2026-10-23 老黄要「这个链接多少也加上吧，还有图标」）── */
 .ms-eternal .mc-v5-card-foot{display:flex;align-items:center;gap:8px}
 
 
