@@ -335,7 +335,25 @@ const SEARCH_OUTPUT = {
       items: WORD_ITEM_SCHEMA,
       description: 'pool=chat / all 时：按时间倒序的一列话（默认最多 30 条，limit 可调，最多 100）',
     },
-    note: { type: 'string', description: '提示（没撞到 / 只摊了前几件 / 只给最近几条 / 空）' },
+    note: { type: 'string', description: '提示（没撞到 / 只是沾边 / 真没记过 / 只摊了前几件 / 只给最近几条 / 空）' },
+    found: {
+      type: 'integer',
+      description: 'pool=chat 时：这次返回了几条（0 = 一条都没撞到，看 verdict）',
+    },
+    verdict: {
+      type: 'string',
+      enum: ['hit', 'weak', 'empty_window', 'empty_all', 'empty_unknown'],
+      description:
+        'pool=chat 时的命中质量（2026-11-07 加，B4）。' +
+        ' hit = 真撞上了；weak = 只撞到零散的字**很可能是没记过**；' +
+        ' empty_window = 最近这段时间没有、更早的有（要翻就传 windowDays: 0）；' +
+        ' empty_all = 全库都没有，**这就是没记过，直说**；' +
+        ' empty_unknown = 探测失败，只能说「没查到」。',
+    },
+    timeHint: {
+      type: 'string',
+      description: 'pool=chat 时：查询里认出来的时间词（「昨天」「上次」「以前」），没认出来就是空串',
+    },
   },
 };
 
@@ -509,6 +527,8 @@ export function apply(ctx, config) {
       ' pool 选查哪一摊：event（默认）＝只查挂在事上的话，摊成事；chat ＝不查事，直接查「没挂事的话」（判工里的闲聊池 chat / 废话池 trash，落到库里就是 event_id IS NULL），按时间倒序给一列话（id / 时间 / 谁 / 分数 / 七情 / 原话）；all ＝两边都要，先摊事，末尾再列一节没挂事的话。' +
       AXIS_DOC +
       ' 撞「还记得吗 / 上次那个 / 以前怎么定的」这类话，先查这里，别凭印象说。翻不到先换词（撞行为/结果而不是功能名）、实在没有再用 pool:"all" 把闲聊池也扫一遍，至少试三次再承认没有。' +
+      ' **时间词**（2026-11-07 加，B3）：q 里写「昨天 / 前天 / 今天」「最近三天 / 最近一周」「上次 / 刚才」「以前 / 之前 / 当初」会被自动认出来——昨天前天缩到那一天、上次让新的往上推、以前翻全库。认出来时返回里 timeHint 有值，不用另传 day。' +
+      ' **拒答规矩**（2026-11-07 加，B4）：返回里的 verdict 要说清话在后面——hit 是真撞上；weak 表示只沾到零散的字，**那几条要是跟问题无关，就直说「没记过」，别硬凑**；empty_all 就是全库都没有，直说没记过；empty_window 是「最近没有、更早的有」，要翻传 windowDays: 0。**别把「没查到」说成「没记过」，也别把「没记过」编成一个像样的答案。**' +
       sharedNote,
     parameters: {
       type: 'object',
