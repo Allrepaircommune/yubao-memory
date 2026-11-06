@@ -2,6 +2,10 @@
 
 给 [DeepSeek Harness](https://github.com/deepseek-ai) 的一个记忆插件。
 
+> 它是**在 `dsh-mindsea` 0.3.1（MIT，作者署名 `MindSea contributors`）上做起来的**，不是从零写的；
+> 面板样式来自 [memory-eternal](https://github.com/EternalNight996/memory-eternal)（MIT）。
+> 哪些是接的、哪些是我们加的，见 [`docs/血统与许可.md`](docs/血统与许可.md)。
+
 名字来自海边那条地带：**涨潮时被淹没，退潮时露出来**。
 记忆也是这样——常被取到的浮在上面，久不提的沉回海底，但从不相丢。
 
@@ -270,4 +274,16 @@ npm test
 
 ## 许可
 
-MIT。界面部分来自 [memory-eternal](https://github.com/EternalNight996/memory-eternal)（MIT，Copyright (c) 2026 EternalNight996），详见 `NOTICE`。
+MIT。但**不是从零写的**，三段血统得分清楚：
+
+| 段 | 是谁的 | 许可 |
+|---|---|---|
+| 底座 `dsh-mindsea` 0.3.1（五层模型、沉淀器、查询层、面板） | `MindSea contributors`（原始仓库地址已丢失） | MIT |
+| 面板样式与卡片结构 | [memory-eternal](https://github.com/EternalNight996/memory-eternal)，`EternalNight996` | MIT |
+| 0.4.x 增量（检索 v2 / 投影 / selfNote / 冲突取代 / 溯源 / 安装器） | 本项目 | MIT |
+
+原包 21 个文件里 **12 个一字没动**（含 `LICENSE` 和 `NOTICE`，原样保留），改过的 9 个是纯增量
+（+488 / −32 行，删减里 21 行是 README），新增 7 个文件。
+
+**别对外说「全部自己写的」。** 逐文件账目、对外话术、发布前的合规清单都在
+[`docs/血统与许可.md`](docs/血统与许可.md)。
