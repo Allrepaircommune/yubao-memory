@@ -44,11 +44,12 @@
 node scripts/install.mjs
 ```
 
-它做三件事：
+它做四件事（都不用你动手）：
 
 1. 把本包 link 进你的 DSH profile（`node_modules/dsh-mindsea`，Windows 用 junction）
 2. 把 `dsh-mindsea` 写进 profile 的 `dsh.profile.bundles`（**改之前先备份 package.json**）
 3. 库不存在就建一个空库
+4. **把 mindsea 段写进 `cordis.patch.yml`**（改之前先备份；格式不认识就打印出来让你贴）
 
 找不到 profile、或者有多个 profile 时它会列出来让你指定：
 
@@ -63,25 +64,13 @@ node scripts/install.mjs --db "D:/memory/sea2.db"   # 库放别处
 node scripts/install.mjs --dry-run                   # 只看会做什么，不动手
 ```
 
-**然后还要两步**（脚本会提醒你）：
-
-1. 确认 profile 的 `cordis.patch.yml` 里有这一段：
-
-```yaml
-- id: mindsea
-  name: dsh-mindsea
-  config:
-    dbPath: 'D:/memory/sea2.db'   # 换成你自己的库路径
-    autoCapture: true
-```
-
-2. 重启 DSH（或者用 `plugin_manager` 把 `include:mindsea` 关一次再开）
+**装完只剩一步：重启 DSH**（或者用 `plugin_manager` 把 `include:mindsea` 关一次再开）。
 
 重启后侧边栏会多一个「潮间带」入口。第一次聊完一轮，库里就会有数据。
 
 > **只想建库不想装**：`node scripts/init-db.mjs [路径]`，默认在**插件目录的上一层**建 `sea2.db`。
 
-> 库换个位置：设环境变量 `DSH_MINDSEA_DB=<路径>`，或者在 `cordis.patch.yml` 里给这行加 `config: { dbPath: '...' }`。
+> 库换个位置：设环境变量 `DSH_MINDSEA_DB=<路径>`。装了之后就不用改 yml 了。
 
 --- 
 

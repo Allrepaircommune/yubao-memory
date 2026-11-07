@@ -92,7 +92,7 @@ if (!fs.existsSync(profilePkg)) {
 // ── 2. link 进 node_modules ─────────────────────────────────────────────────
 const nm = path.join(profile, 'node_modules');
 const linkPath = path.join(nm, PKG_NAME);
-log(`\n[1/3] link 插件`);
+log(`\n[1/4] link 插件`);
 log(`  ${linkPath}`);
 log(`    -> ${PKG_DIR}`);
 
@@ -120,7 +120,7 @@ if (dryRun) {
 }
 
 // ── 3. 写进 bundles ────────────────────────────────────────────────────────
-log(`\n[2/3] 写进 profile 的 dsh.profile.bundles`);
+log(`\n[2/4] 写进 profile 的 dsh.profile.bundles`);
 const pkgText = fs.readFileSync(profilePkg, 'utf8');
 const profileJson = JSON.parse(pkgText);
 const bundles = profileJson?.dsh?.profile?.bundles;
@@ -142,7 +142,7 @@ if (bundles.includes(PKG_NAME)) {
 }
 
 // ── 4. 建库 ────────────────────────────────────────────────────────────────
-log(`\n[3/3] 记忆库`);
+log(`\n[3/4] 记忆库`);
 const dbPath = wantDb ? path.resolve(wantDb) : path.join(PKG_DIR, '..', 'sea2.db');
 if (fs.existsSync(dbPath)) {
   const size = (fs.statSync(dbPath).size / 1024 / 1024).toFixed(2);
@@ -161,16 +161,47 @@ if (fs.existsSync(dbPath)) {
   }
 }
 
+// ── 4. 写进 cordis.patch.yml ───────────────────────────────────────────────
+// 2026-11-07 加：以前收尾会让用户「手动确认 yml 里有这一段」——那就是最高的那级门槛。
+// 现在能自动写就自动写，写不了（格式不认识 / 文件不在）才退回打印让人贴。
+log(`\n[4/4] 写进 cordis.patch.yml`);
+const patchPath = path.join(profile, 'cordis.patch.yml');
+const yamlBlock = (p) =>
+  `\n- id: mindsea\n  name: ${PKG_NAME}\n  config:\n    dbPath: '${p.replace(/\\/g, '/')}'\n    autoCapture: true\n`;
+let patchState = 'missing';
+
+if (fs.existsSync(patchPath)) {
+  const text = fs.readFileSync(patchPath, 'utf8');
+  if (/\bid:\s*mindsea\b/.test(text)) {
+    patchState = 'exists';
+    ok('已经有 mindsea 段，不重复写');
+    if (!/dbPath\s*:/.test(text)) warn('但没看到 dbPath —— 库不在默认位置的话，得手动补一行');
+  } else if (!/^\s*-\s+id\s*:/m.test(text)) {
+    // 不是「- id:」数组格式（可能是 group / isolate 之类的结构），不敢瞎追加
+    patchState = 'unknown';
+    warn('这个 yml 不是「- id:」数组格式，不自动改。把下面这段手动贴进去：');
+    log(yamlBlock(dbPath));
+  } else if (dryRun) {
+    patchState = 'dry';
+    log('  (--dry-run) 会把 mindsea 段追加到末尾');
+  } else {
+    const stamp = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
+    fs.copyFileSync(patchPath, `${patchPath}.bak-${stamp}`);
+    fs.writeFileSync(patchPath, `${text.trimEnd()}\n${yamlBlock(dbPath)}`, 'utf8');
+    patchState = 'added';
+    ok(`已追加（原文件备份成 cordis.patch.yml.bak-${stamp}）`);
+  }
+} else {
+  warn(`没找到 ${patchPath} —— 需要你自己建一个，里面写：`);
+  log(yamlBlock(dbPath));
+}
+
 // ── 收尾 ───────────────────────────────────────────────────────────────────
-log(`\n完成。还需要做的事：`);
-log(`  1. 确认 profile 的 cordis.patch.yml 里有这一段（没有就加上）：`);
-log('');
-log(`       - id: mindsea`);
-log(`         name: ${PKG_NAME}`);
-log(`         config:`);
-log(`           dbPath: '${dbPath.replace(/\\/g, '\\\\')}'`);
-log(`           autoCapture: true`);
-log('');
-log(`  2. 重启 DSH（或者跑 plugin_manager 把 include:mindsea 关一次再开）`);
-log(`  3. 侧边栏会出现「识海」入口`);
+log(`\n完成。`);
+if (patchState === 'added' || patchState === 'exists' || patchState === 'dry') {
+  log(`还剩一步：重启 DSH（或者用 plugin_manager 把 include:mindsea 关一次再开）`);
+  log(`重启后侧边栏会出现「潮间带」入口。`);
+} else {
+  log(`还剩两步：①把上面那段贴进 cordis.patch.yml ②重启 DSH`);
+}
 log('');
