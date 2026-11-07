@@ -1249,7 +1249,7 @@ window.__ModuleLoader__.load({
         if (!list.length) {
           featEl.innerHTML =
             '<div class="mc-v5-feature-copy"><div class="mc-v5-eyebrow">今天回看</div>' +
-            '<h3>今天还没有话</h3><p>说点什么，它会自己长出来。</p></div>' +
+            '<h3>这里还什么都没有</h3><p>先随便跟我聊两句 —— 你说过的话会自己出现在这儿，不用你整理。</p></div>' +
             '<div class="mc-v5-feature-side"><span class="mc-v5-feature-n">0</span>' +
             '<span class="mc-v5-feature-open">—</span></div>';
           return;
@@ -2791,8 +2791,8 @@ window.__ModuleLoader__.load({
           .then((j) => {
             if (!j.ok) throw new Error(j.error || '读不到');
             if (!j.days.length) {
-              daysEl.innerHTML = '<div class="sx-empty">还没有话</div>';
-              bodyEl.innerHTML = '<div class="sx-empty">还没有话</div>';
+              daysEl.innerHTML = '<div class="sx-empty">这天没有话</div>';
+              bodyEl.innerHTML = '<div class="sx-empty">这天没有话 —— 换一天看看，或者先跟我聊两句。</div>';
               return;
             }
             let maxN = 1;
@@ -3186,7 +3186,7 @@ window.__ModuleLoader__.load({
 
           // 最近流水
           if (!cap.entries || !cap.entries.length) {
-            html += '<div class="sx-empty">还没有沉淀记录 —— 重启 DSH 之后聊两句，这儿就会长出来。</div>';
+            html += '<div class="sx-empty">还没记过什么 —— 跟我聊两句，每轮结束都会记一笔在这儿。</div>';
           } else {
             html += '<section class="sx-sec"><div class="sx-sech"><span class="n">最近流水</span>' +
               '<span class="m">' + cap.entries.length + ' 条</span></div>' +
